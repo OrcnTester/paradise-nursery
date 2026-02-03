@@ -1,89 +1,74 @@
-import { useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { removeItem, updateQuantity, selectCartItems, selectTotalAmount, selectTotalQuantity } from '../redux/CartSlice.jsx'
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeItem,
+  updateQuantity,
+  selectCartItems,
+  selectTotalAmount,
+  selectTotalQuantity,
+} from "../redux/CartSlice.jsx";
 
 export default function CartItem() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const cartItems = useSelector(selectCartItems)
-  const totalAmount = useSelector(selectTotalAmount)
-  const totalQty = useSelector(selectTotalQuantity)
+  const cartItems = useSelector(selectCartItems);
+  const totalAmount = useSelector(selectTotalAmount);
+  const totalQty = useSelector(selectTotalQuantity);
 
-  const [checkoutMsg, setCheckoutMsg] = useState('')
-
-  const empty = cartItems.length === 0
+  const [checkoutMsg, setCheckoutMsg] = useState("");
 
   const rows = useMemo(() => {
     return cartItems.map((it) => ({
       ...it,
       lineTotal: it.price * it.quantity,
       imgUrl: new URL(`../assets/${it.image}`, import.meta.url).toString(),
-    }))
-  }, [cartItems])
+    }));
+  }, [cartItems]);
 
-  const inc = (id, current) => dispatch(updateQuantity({ id, quantity: current + 1 }))
+  const computedTotal = useMemo(
+    () => rows.reduce((sum, r) => sum + r.lineTotal, 0),
+    [rows]
+  );
+
+  const inc = (id, current) =>
+    dispatch(updateQuantity({ id, quantity: current + 1 }));
+
   const dec = (id, current) => {
-    if (current <= 1) {
-      dispatch(removeItem(id))
-      return
-    }
-    dispatch(updateQuantity({ id, quantity: current - 1 }))
-  }
+    if (current <= 1) dispatch(removeItem(id)); // qty hits 0 => remove
+    else dispatch(updateQuantity({ id, quantity: current - 1 }));
+  };
 
   const handleCheckout = () => {
-    // Autograder-friendly: show a visible message AND an alert
-    const msg = 'Checkout: Coming soon ✨'
-    setCheckoutMsg(msg)
-    alert(msg)
-  }
+    alert("Coming soon!");
+    setCheckoutMsg("Checkout: Coming soon ✨");
+  };
+
+  const empty = rows.length === 0;
 
   return (
     <>
-      {/* Navbar required by rubric */}
-      <header className="navbar">
-        <div className="navbar-inner">
-          <div className="brand">
-            <h1>Paradise Nursery</h1>
-            <span className="badge">Plants • Home</span>
-          </div>
+      <nav className="navbar">
+        <Link to="/">Home</Link>
+        <Link to="/plants">Plants</Link>
+        <Link to="/cart" className="cart-link">
+          🛒 Cart <span className="cart-count">({totalQty})</span>
+        </Link>
+      </nav>
 
-          <nav className="navlinks">
-            <NavLink to="/" className={({ isActive }) => 'navlink' + (isActive ? ' active' : '')}>
-              Home
-            </NavLink>
-            <NavLink to="/plants" className={({ isActive }) => 'navlink' + (isActive ? ' active' : '')}>
-              Plants
-            </NavLink>
-            <NavLink
-              to="/cart"
-              className={({ isActive }) => 'navlink cart-pill' + (isActive ? ' active' : '')}
-              aria-label="Cart"
-            >
-              <span>Cart</span>
-              <span className="cart-count" title="Total items in cart">
-                {totalQty}
-              </span>
-            </NavLink>
-          </nav>
-        </div>
-      </header>
-
-      <section className="page">
+      <main className="page">
         <div className="cart-header">
-          <div>
-            <h2>Shopping Cart</h2>
-            <p className="small">
-              Total items: <strong>{totalQty}</strong>
-            </p>
-          </div>
-
+          <h2>Shopping Cart</h2>
           <div className="actions-row">
-            <button className="secondary-btn" onClick={() => navigate('/plants')}>
+            <button className="secondary-btn" onClick={() => navigate("/plants")}>
               Continue Shopping
             </button>
-            <button className="primary-btn" onClick={handleCheckout} disabled={empty}>
+            <button
+              className="primary-btn"
+              onClick={handleCheckout}
+              disabled={empty}
+            >
               Checkout
             </button>
           </div>
@@ -92,43 +77,30 @@ export default function CartItem() {
         {checkoutMsg && <div className="toast">{checkoutMsg}</div>}
 
         {empty ? (
-          <div className="toast" style={{ marginTop: 16 }}>
-            Your cart is empty. Hit <strong>Continue Shopping</strong> and grab some greens 🌿
-          </div>
+          <div className="toast">Your cart is empty.</div>
         ) : (
           <>
             <div className="cart-list">
               {rows.map((it) => (
-                <div className="cart-item" key={it.id}>
-                  <img src={it.imgUrl} alt={it.name} />
-                  <div>
-                    <h3>{it.name}</h3>
-                    <div className="cart-meta small">
-                      <span>Unit: ${it.price.toFixed(2)}</span>
-                      <span>•</span>
-                      <span>
-                        Item total: <strong>${it.lineTotal.toFixed(2)}</strong>
-                      </span>
+                <div className="cart-row" key={it.id}>
+                  <img className="thumb" src={it.imgUrl} alt={it.name} />
+                  <div className="cart-info">
+                    <h4>{it.name}</h4>
+                    <div className="small">Unit: ${it.price.toFixed(2)}</div>
+                    <div className="small">
+                      Line total: <strong>${it.lineTotal.toFixed(2)}</strong>
                     </div>
 
-                    <div className="cart-meta" style={{ marginTop: 10 }}>
-                      <div className="qty-controls" aria-label={`Quantity controls for ${it.name}`}>
-                        <button className="icon-btn" onClick={() => dec(it.id, it.quantity)} aria-label="Decrease">
-                          −
-                        </button>
-                        <strong>{it.quantity}</strong>
-                        <button className="icon-btn" onClick={() => inc(it.id, it.quantity)} aria-label="Increase">
-                          +
-                        </button>
-                      </div>
+                    <div className="qty-row">
+                      <button onClick={() => dec(it.id, it.quantity)}>-</button>
+                      <span className="qty">{it.quantity}</span>
+                      <button onClick={() => inc(it.id, it.quantity)}>+</button>
 
                       <button
-                        className="icon-btn danger"
+                        className="danger-btn"
                         onClick={() => dispatch(removeItem(it.id))}
-                        aria-label={`Remove ${it.name}`}
-                        title="Remove"
                       >
-                        🗑
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -137,22 +109,12 @@ export default function CartItem() {
             </div>
 
             <div className="cart-total">
-              <div>
-                <div className="small">Total cart amount</div>
-                <div style={{ fontSize: 22, fontWeight: 900 }}>${totalAmount.toFixed(2)}</div>
-              </div>
-              <div className="actions-row">
-                <button className="secondary-btn" onClick={() => navigate('/plants')}>
-                  Continue Shopping
-                </button>
-                <button className="primary-btn" onClick={handleCheckout}>
-                  Checkout
-                </button>
-              </div>
+              <div>Total amount: <strong>${computedTotal.toFixed(2)}</strong></div>
+              <div className="small">(selector total: ${totalAmount.toFixed(2)})</div>
             </div>
           </>
         )}
-      </section>
+      </main>
     </>
-  )
+  );
 }

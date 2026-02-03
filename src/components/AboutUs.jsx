@@ -4,20 +4,16 @@ export default function AboutUs() {
       <h2>About Us</h2>
 
       <p>
-        <strong>Paradise Nursery</strong> is an online plant shop designed to
-        make plant shopping simple, fun, and accessible.
+        <strong>Paradise Nursery</strong> is an online plant shop built to make
+        plant shopping simple, fun, and beginner-friendly.
       </p>
 
       <p>
-        We offer curated indoor houseplants across multiple categories, clear
-        product details, and transparent pricing—so you can confidently choose
-        the right plant for your space.
+        We curate indoor houseplants across multiple categories, provide clear
+        product details, and transparent pricing so you can choose confidently.
       </p>
 
-      <p>
-        Our mission is to help you create a calmer, greener home—one plant at a
-        time 🌿
-      </p>
+      <p>Our mission: a calmer, greener home—one plant at a time 🌿</p>
     </div>
   );
 }

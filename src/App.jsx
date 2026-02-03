@@ -11,9 +11,8 @@ function Landing({ onGetStarted }) {
     <div className="landing">
       <header>
         <h1>Welcome to Paradise Nursery</h1>
-        <p>
-          Discover beautiful plants for every space. Add to cart and grow your
-          home jungle 🌿
+        <p className="small">
+          Browse plants, add to cart, and manage quantities with ease 🌿
         </p>
       </header>
 
