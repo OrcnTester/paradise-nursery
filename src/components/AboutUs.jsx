@@ -4,18 +4,20 @@ export default function AboutUs() {
       <h2>About Us</h2>
 
       <p>
-        <strong>Paradise Nursery</strong> is an online plant shop built for people who want a calmer, greener home —
-        even if they’ve never kept a plant alive before.
+        <strong>Paradise Nursery</strong> is an online plant shop designed to
+        make plant shopping simple, fun, and accessible.
       </p>
 
       <p>
-        We curate houseplants across multiple categories (indoor favorites, succulents &amp; cacti, and air‑purifying picks),
-        and we keep the experience simple: clear product details, transparent pricing, and an easy shopping cart.
+        We offer curated indoor houseplants across multiple categories, clear
+        product details, and transparent pricing—so you can confidently choose
+        the right plant for your space.
       </p>
 
-      <p className="small">
-        Our mission: make plant shopping feel friendly, not intimidating — one leaf at a time 🌿
+      <p>
+        Our mission is to help you create a calmer, greener home—one plant at a
+        time 🌿
       </p>
     </div>
-  )
+  );
 }
