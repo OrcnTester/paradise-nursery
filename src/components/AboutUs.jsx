@@ -1,17 +1,20 @@
 export default function AboutUs() {
   return (
     <section>
-      <h2>About Paradise Nursery</h2>
+      <h2>About Us</h2>
+
       <p>
-        Paradise Nursery is a small, plant-obsessed shop that believes every desk, shelf, and living room deserves a
-        little greenery.
+        <strong>Paradise Nursery</strong> is an online plant shop built for people who want a calmer, greener home — even
+        if they’ve never kept a plant alive before.
       </p>
+
       <p>
-        We curate beginner-friendly plants, provide simple care tips, and ship with love (and a tiny bit of dirt… sorry
-        in advance).
+        We curate houseplants across multiple categories (indoor favorites, succulents & cacti, and air‑purifying picks),
+        and we keep the experience simple: clear product details, transparent pricing, and an easy shopping cart.
       </p>
+
       <p className="small">
-        This app is a demo project: browse plants, add to cart, and manage quantities using Redux Toolkit.
+        Our mission: make plant shopping feel friendly, not intimidating — one leaf at a time 🌿
       </p>
     </section>
   )
