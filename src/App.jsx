@@ -1,26 +1,26 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
+
 import AboutUs from './components/AboutUs.jsx'
 import ProductList from './components/ProductList.jsx'
 import CartItem from './components/CartItem.jsx'
 
-function Landing() {
+function Landing({ onGetStarted }) {
   return (
     <div className="landing">
       <div className="landing-card">
-        <h1 className="landing-title">Paradise Nursery</h1>
-        <p className="landing-subtitle">
-          Welcome to your cozy corner of green. Browse hand-picked houseplants, add favorites to your cart, and build
-          your own little paradise.
-        </p>
+        <header>
+          <h1>Welcome to Paradise Nursery</h1>
+          <p className="landing-subtitle">
+            Paradise Nursery is your cozy corner of green — browse plants, add favorites, and grow your home jungle.
+          </p>
+        </header>
 
         <div className="cta-row">
-          <Link className="primary-btn" to="/plants">
+          <button className="primary-btn" onClick={onGetStarted}>
             Get Started
-          </Link>
-          <Link className="secondary-btn" to="/about">
-            About Us
-          </Link>
+          </button>
         </div>
       </div>
     </div>
@@ -28,10 +28,21 @@ function Landing() {
 }
 
 export default function App() {
+  const [showProductList, setShowProductList] = useState(false)
+
   return (
     <div className="app-shell">
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route
+          path="/"
+          element={
+            showProductList ? (
+              <ProductList />
+            ) : (
+              <Landing onGetStarted={() => setShowProductList(true)} />
+            )
+          }
+        />
         <Route
           path="/about"
           element={
